@@ -9,9 +9,9 @@ Normalization:
   Version: '0.1.0'
 References:
 - Title: ASIM File Schema
-  Link: https://aka.ms/AzSentinelFileEventDoc
+  Link: https://aka.ms/ASimFileEventDoc
 - Title: ASIM
-  Link: https://aka.ms/AzSentinelNormalization
+  Link: https://aka.ms/AboutASIM
 Description: ASIM Sysmon File Creation Event Parser (event number 11) from "Event" and "WindowsEvent" tables.
 ParserName: vimFileEventMicrosoftSysmonCreated
 ParserQuery: |
@@ -79,7 +79,7 @@ ParserQuery: |
                 TargetFilePath=tostring(EventData.TargetFilename),
                 ActingProcessName = tostring(EventData.Image),
                 ActingProcessId = tostring(EventData.ProcessId),
-                ActingProcessGuid = tostring(EventData.ProcessGuid),
+                ActingProcessGuid = extract ('^{(.*)}$', 1, tostring(EventData.ProcessGuid), typeof(string)),
                 ActorUsername = tostring(EventData.User) // this field is relevant for newer versions of Sysmon
         | project-rename
                 DvcHostname = Computer
